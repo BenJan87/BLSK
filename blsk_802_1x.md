@@ -105,7 +105,7 @@
 
 # STP oraz RSTP
 
-## Spanning Tree Protocl ( STP )
+## Spanning Tree Protocol ( STP )
 Zapobieganie pętlom - burzy rozgłoszeniowej w warstwie 2.
 
 - Składa się z:
@@ -130,12 +130,59 @@ Zapobieganie pętlom - burzy rozgłoszeniowej w warstwie 2.
 
     3. Wybranie **designated ports** - czyli porty **designated switcha**, który ma najlepszą drogą do roota
 
+    ( poza wyżej wymienionymi portami są jeszcze **blocked ports**, które uniemożliwiają tworzenie się pętli)
+
 - cztery kroki decyzyjności STP:
 
     1. najmniejsze BID
-    2. Najmniejszy koszt ścieżki do roota
+    2. najmniejszy koszt ścieżki do roota
     3. najmniejszy otrzymany/wysłany BID
     4. najmniejszy otrzymany/wysłany PID
 
 
 
+## RSTP ( Rapid spanning-tree protocol)
+
+- W tym protokole powiększono porty o stany **alternate** oraz **backup**:
+
+    1. **alternate** - druga najlepsza ścieżka do roota -> porty alternatywne przejmują rolę root portów
+
+    2. **backup** - nie przekazuje ramek dalej -> przejmuję rolę portów dezygnowanych
+
+    ![](images_802/screen_6.png)
+    ![](images_802/screen_7.png)
+
+- poniżej zaprezentowano jak działają role portów w sieci z protokołem RSTP:
+
+    ![](images_802/screen_5.png)
+
+
+
+- **edge ports** - porty te przechodzą od razu w stan *forwarding* - po otrzymaniu ramki BPDU przechodzą w zwykły tryb ( tak jak w STP )
+
+- **link type**:
+
+    - point-to-point - działa w full-duplex ( wysyłanie i odbieranie naraz )
+
+    - shared - half-duplex ( wysyła i odbiera, ale niejednocześnie )
+
+- ulepszenia w 802.1w:
+
+    - **uplink fast** - główne działanie to przyspieszenie przejścia do trybu forwardingu ( z portu blokowanego )
+
+    - **backbone fast** - redukuje max-age time, czyli po przerwaniu połączenia następuje szybsze "naprawienie" sieci
+
+## MSTP ( Multiple spanning-tree protocol )
+
+Każdy vlan może mieć swoją hierarchię STP
+
+- dodatkowo PVSTP (Per Vlan Spanning-tree Protocol) - każdy vlan ma swoją hierarchię STP
+
+- umożliwia łączenie różnych hierarchi vlanów - w jednych zakresach port może być blocked, w innych forwarding
+
+- zamiast tworzenia nowych STP dla kolejnych vlanów możemy je łączyć regiony
+- aby połączyć hierarchie muszą być spełnione warunki:
+
+    - ta sama nazwa
+    - ta sama instacja
+    - ten sam revision number
